@@ -6,48 +6,10 @@
     <title>Camera Capture</title>
 </head>
 <body>
-    <h1>Camera Capture</h1>
+    <h1>Hello World</h1>
     <video id="video" autoplay playsinline></video>
     <canvas id="canvas" style="display: none;"></canvas>
     <button id="capture">Capture</button>
 
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const captureButton = document.getElementById('capture');
-
-        // Access camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(err => {
-                console.error("Error accessing camera: ", err);
-            });
-
-        // Capture and send image
-        captureButton.addEventListener('click', () => {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const imageData = canvas.toDataURL('image/png'); // Image in base64
-            fetch('/upload', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ image: imageData })
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Image sent successfully!');
-                } else {
-                    alert('Failed to send image');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
